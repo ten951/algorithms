@@ -60,10 +60,12 @@ public class Stack<Item> implements Iterable<Item> {
     private class StackIterator implements Iterator<Item> {
         private Node current = first;
 
+        @Override
         public boolean hasNext() {
             return current != null;
         }
 
+        @Override
         public Item next() {
             Item item = current.item;
             current = current.next;
