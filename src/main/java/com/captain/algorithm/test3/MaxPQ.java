@@ -56,10 +56,23 @@ public class MaxPQ<Key extends Comparable<Key>> {
         return max;
     }
 
+    /**
+     * 比较i索引元素是否小于j索引元素
+     *
+     * @param i 索引
+     * @param j 素银
+     * @return true pq[i] < pq[j]
+     */
     private boolean less(int i, int j) {
         return pq[i].compareTo(pq[j]) < 0;
     }
 
+    /**
+     * 交换索引i和j的元素值
+     *
+     * @param i 索引
+     * @param j 索引
+     */
     private void exch(int i, int j) {
         Key t = pq[i];
         pq[i] = pq[j];
@@ -67,6 +80,11 @@ public class MaxPQ<Key extends Comparable<Key>> {
     }
 
 
+    /**
+     * 改变数据大小为capacity
+     *
+     * @param capacity 数据大小
+     */
     private void resize(int capacity) {
         assert capacity > N;
         Key[] temp = (Key[]) new Comparable[capacity];
@@ -78,20 +96,27 @@ public class MaxPQ<Key extends Comparable<Key>> {
 
 
     /**
+     * 自上而下循环比较
      * 下浮
      *
      * @param k 节点
      */
     private void sink(int k) {
+        /*从k节点开始,一直循环到最后, 找k节点合适的位置*/
         while (2 * k <= N) {
+            /*k的左儿子节点, j*/
             int j = 2 * k;
+            /*j不是左后一个, 并且左儿子小于右儿子, j++*/
             if (j < N && less(j, j + 1)) {
                 j++;
             }
+            /*当k>=j大, 结束循环, 这就是他的正确位置*/
             if (!less(k, j)) {
                 break;
             }
+            /*k<j的时候, 交换 k和j的位置*/
             exch(k, j);
+            /*k的值=j*/
             k = j;
         }
     }
@@ -102,28 +127,14 @@ public class MaxPQ<Key extends Comparable<Key>> {
      * @param k 节点位置
      */
     private void swim(int k) {
+        /*k不在顶点 并且 k/2(父节点) 小于 k节点*/
         while (k > 1 && less(k / 2, k)) {
+            /*交换父节点和k的位置*/
             exch(k / 2, k);
+            /*k = 父节点的索引*/
             k = k / 2;
         }
     }
 
-    public static void main(String[] args) {
-        MaxPQ<Integer> maxPQ = new MaxPQ<>(5);
-        maxPQ.insert(1);
-        maxPQ.insert(2);
-        maxPQ.insert(5);
-        maxPQ.insert(5);
-        maxPQ.insert(7);
-        maxPQ.insert(5);
-        maxPQ.insert(8);
-        maxPQ.insert(5);
-        maxPQ.insert(9);
-        maxPQ.insert(5);
-        maxPQ.insert(4);
-        maxPQ.insert(5);
-        Integer integer = maxPQ.delMax();
-        System.out.println("integer = " + integer);
-    }
 
 }
