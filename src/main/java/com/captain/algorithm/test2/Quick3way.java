@@ -5,19 +5,15 @@ import com.captain.algorithm.StdOut;
 import com.captain.algorithm.StdRandom;
 
 /**
+ * 三向切分的快速排序
  * @author Darcy
  * Created By Darcy on 2018/7/27 下午2:57
  */
 public class Quick3way {
-    // This class should not be instantiated.
     private Quick3way() {
     }
 
-    /**
-     * Rearranges the array in ascending order, using the natural order.
-     *
-     * @param a the array to be sorted
-     */
+
     public static void sort(Comparable[] a) {
         StdRandom.shuffle(a);
         sort(a, 0, a.length - 1);
@@ -49,16 +45,11 @@ public class Quick3way {
     }
 
 
-    /***************************************************************************
-     *  Helper sorting functions.
-     ***************************************************************************/
 
-    // is v < w ?
     private static boolean less(Comparable v, Comparable w) {
         return v.compareTo(w) < 0;
     }
 
-    // exchange a[i] and a[j]
     private static void exch(Object[] a, int i, int j) {
         Object swap = a[i];
         a[i] = a[j];
@@ -66,9 +57,7 @@ public class Quick3way {
     }
 
 
-    /***************************************************************************
-     *  Check if array is sorted - useful for debugging.
-     ***************************************************************************/
+
     private static boolean isSorted(Comparable[] a) {
         return isSorted(a, 0, a.length - 1);
     }
@@ -80,7 +69,6 @@ public class Quick3way {
     }
 
 
-    // print array to standard output
     private static void show(Comparable[] a) {
         for (int i = 0; i < a.length; i++) {
             StdOut.println(a[i]);

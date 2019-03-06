@@ -10,29 +10,47 @@ import java.util.NoSuchElementException;
  * Created By Darcy on 2018/6/13 下午2:51
  */
 public class IndexMinPQ<Key extends Comparable<Key>> {
-    private int maxN;        // maximum number of elements on PQ
-    private int n;           // number of elements on PQ
-    private int[] pq;        // binary heap using 1-based indexing
-    private int[] qp;        // inverse of pq - qp[pq[i]] = pq[qp[i]] = i
-    private Key[] keys;      // keys[i] = priority of i
+    /**
+     * 优先队列的最大容量
+     */
+    private int maxN;
+    /**
+     * 优先队列的元素个数
+     */
+    private int n;
+    /**
+     * 从1索引开始的二叉堆
+     */
+    private int[] pq;
+    /**
+     * 记录优先队列元素的索引位置. 可以做到修改
+     * qp[pq[i]] = pq[qp[i]] = i
+     */
+    private int[] qp;
+    /**
+     * keys[i] = priority of i
+     */
+    private Key[] keys;
 
     /**
-     * Initializes an empty indexed priority queue with indices between {@code 0}
-     * and {@code maxN - 1}.
+     * 创建一个最大容量为maxN的优先队列,索引的取值范围为0到maxN-1
      *
      * @param maxN the keys on this priority queue are index from {@code 0}
      *             {@code maxN - 1}
      * @throws IllegalArgumentException if {@code maxN < 0}
      */
     public IndexMinPQ(int maxN) {
-        if (maxN < 0) throw new IllegalArgumentException();
+        if (maxN < 0) {
+            throw new IllegalArgumentException();
+        }
         this.maxN = maxN;
         n = 0;
         keys = (Key[]) new Comparable[maxN + 1];    // make this of length maxN??
         pq = new int[maxN + 1];
         qp = new int[maxN + 1];                   // make this of length maxN??
-        for (int i = 0; i <= maxN; i++)
+        for (int i = 0; i <= maxN; i++) {
             qp[i] = -1;
+        }
     }
 
     /**
@@ -68,17 +86,21 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
     }
 
     /**
-     * Associates key with index {@code i}.
+     * 将key和索引关联
      *
-     * @param i   an index
-     * @param key the key to associate with index {@code i}
-     * @throws IllegalArgumentException unless {@code 0 <= i < maxN}
-     * @throws IllegalArgumentException if there already is an item associated
-     *                                  with index {@code i}
+     * @param i   索引
+     * @param key 与索引关联的key
+     * @throws IllegalArgumentException 索引超过最大容量
+     * @throws IllegalArgumentException 索引已经存在
      */
     public void insert(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IllegalArgumentException();
-        if (contains(i)) throw new IllegalArgumentException("index is already in the priority queue");
+        if (i < 0 || i >= maxN) {
+            throw new IllegalArgumentException();
+        }
+        if (contains(i)) {
+            throw new IllegalArgumentException("index is already in the priority queue");
+        }
+        /*优先队列长度自增1*/
         n++;
         qp[i] = n;
         pq[n] = i;
@@ -240,9 +262,11 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
     }
 
 
-    /***************************************************************************
-     * Heap helper functions.
-     ***************************************************************************/
+    /**
+     * 上浮
+     *
+     * @param k 索引
+     **/
     private void swim(int k) {
         while (k > 1 && greater(k / 2, k)) {
             exch(k, k / 2);
@@ -250,6 +274,11 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
         }
     }
 
+    /**
+     * 下沉
+     *
+     * @param k 索引
+     */
     private void sink(int k) {
         while (2 * k <= n) {
             int j = 2 * k;
@@ -260,10 +289,6 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
         }
     }
 
-
-    /***************************************************************************
-     * Iterators.
-     ***************************************************************************/
 
     /**
      * Returns an iterator that iterates over the keys on the
