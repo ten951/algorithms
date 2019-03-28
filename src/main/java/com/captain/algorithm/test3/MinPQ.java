@@ -173,7 +173,9 @@ public class MinPQ<Key> implements Iterable<Key> {
         while (2 * k <= n) {
             int j = 2 * k;
             if (j < n && greater(j, j + 1)) j++;
-            if (!greater(k, j)) break;
+            if (!greater(k, j)) {
+                break;
+            }
             exch(k, j);
             k = j;
         }
